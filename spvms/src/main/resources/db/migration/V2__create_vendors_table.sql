@@ -1,7 +1,7 @@
 CREATE TABLE IF NOT EXISTS vendors (
     id BIGINT AUTO_INCREMENT PRIMARY KEY,
-    first_name VARCHAR(200) NOT NULL,
-    last_name VARCHAR(150),
+    name VARCHAR(200) NOT NULL,
+    userName VARCHAR(150),
     email VARCHAR(150),
     phone VARCHAR(50),
     address VARCHAR(255),

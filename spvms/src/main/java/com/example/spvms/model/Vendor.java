@@ -3,7 +3,28 @@ package com.example.spvms.model;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
+
+import io.swagger.v3.oas.annotations.media.Schema;
+
+
+@JsonPropertyOrder({
+    "id",
+    "name",
+    "userName",
+    "email",
+    "phone",
+    "address",
+    "gstNumber",
+    "rating",
+    "location",
+    "category",
+    "compliance",
+    "createdAt",
+    "updatedAt"
+})
 @Entity
+@Schema(description = "Vendor details")
 @Table(name = "vendors")
 public class Vendor {
 
@@ -11,11 +32,11 @@ public class Vendor {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(name = "first_name", nullable = false, length = 200)
-    private String firstName;
+    @Column(name = "name", nullable = false, length = 200)
+    private String name;
 
-    @Column(name = "last_name", length = 150)
-    private String lastName;
+    @Column(name = "userName", length = 150)
+    private String userName;
 
     @Column(name = "email", length = 150)
     private String email;
@@ -52,11 +73,11 @@ public class Vendor {
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
-    public String getFirstName() { return firstName; }
-    public void setFirstName(String name) { this.firstName = name; }
+    public String getName() { return name; }
+    public void setName(String name) { this.name = name; }
 
-    public String getLastName() { return lastName; }
-    public void setLastName(String contactName) { this.lastName = contactName; }
+    public String getUserName() { return userName; }
+    public void setUserName(String userName) { this.userName = userName; }
 
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }

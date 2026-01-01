@@ -24,8 +24,8 @@ public class VendorServiceImpl implements VendorService {
     public Vendor createVendor(VendorRequest request) {
 
         Vendor vendor = new Vendor();
-        vendor.setFirstName(request.getFirstName());
-        vendor.setLastName(request.getLastName());
+        vendor.setName(request.getName());
+        vendor.setUserName(request.getUserName());
         vendor.setEmail(request.getEmail());
         vendor.setPhone(request.getPhone());
         vendor.setAddress(request.getAddress());
@@ -48,8 +48,8 @@ public class VendorServiceImpl implements VendorService {
         Vendor vendor = vendorRepository.findById(id)
                 .orElseThrow(() -> new RuntimeException("Vendor not found"));
 
-        vendor.setFirstName(request.getFirstName());
-        vendor.setLastName(request.getLastName());
+        vendor.setName(request.getName());
+        vendor.setUserName(request.getUserName());
         vendor.setEmail(request.getEmail());
         vendor.setPhone(request.getPhone());
         vendor.setAddress(request.getAddress());

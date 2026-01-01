@@ -6,17 +6,20 @@ import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 import jakarta.validation.constraints.DecimalMin;
+
+
 import jakarta.validation.constraints.DecimalMax;
+
 
 public class VendorRequest {
 
-    @NotBlank(message = "First name is required")
-    @Size(max = 200, message = "First name must be less than 200 characters")
-    private String firstName;
+    @NotBlank(message = "Company name is required")
+    @Size(max = 200, message = "Company name must be less than 200 characters")
+    private String name;
 
-    @NotBlank(message = "Last name is required")
-    @Size(max = 150, message = "Last name must be less than 150 characters")
-    private String lastName;
+    @NotBlank(message = "User name is required")
+    @Size(max = 150, message = "User name must be less than 150 characters")
+    private String username;
 
     @NotBlank(message = "Email is required")
     @Email(message = "Invalid email format")
@@ -55,18 +58,18 @@ public class VendorRequest {
 
     // ================= GETTERS AND SETTERS =================
 
-    public String getFirstName() {
-        return firstName;
+    public String getName() {
+        return name;
     }
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getUserName() {
+        return username;
     }
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setUserName(String username) {
+        this.username = username;
     }
 
     public String getEmail() {
