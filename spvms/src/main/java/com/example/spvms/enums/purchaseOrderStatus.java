@@ -1,8 +1,7 @@
 package com.example.spvms.enums;
 
-public enum purchaseOrderStatus {
-    DRAFT,
-    APPROVED,
-    REJECTED,
+public enum PurchaseOrderStatus {
+    CREATED,
+    DELIVERED,
     CLOSED
 }

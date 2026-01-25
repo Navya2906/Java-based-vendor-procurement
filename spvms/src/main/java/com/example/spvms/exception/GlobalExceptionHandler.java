@@ -8,6 +8,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.server.ResponseStatusException;
+import org.springframework.security.access.AccessDeniedException;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -19,17 +21,39 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
     }
 
+    // ✅ NEW: Proper status propagation
+    @ExceptionHandler(ResponseStatusException.class)
+    public ResponseEntity<Map<String,String>> handleResponseStatus(ResponseStatusException ex) {
+        Map<String,String> body = new HashMap<>();
+        body.put("error", ex.getReason());
+        return ResponseEntity.status(ex.getStatusCode()).body(body);
+    }
+
+    // ✅ NEW: Authorization errors
+    @ExceptionHandler(AccessDeniedException.class)
+    public ResponseEntity<Map<String,String>> handleAccessDenied(AccessDeniedException ex) {
+        Map<String,String> body = new HashMap<>();
+        body.put("error", ex.getMessage());
+        return ResponseEntity.status(HttpStatus.FORBIDDEN).body(body);
+    }
+
+    // ⚠️ Keep RuntimeException LAST & generic
     @ExceptionHandler(RuntimeException.class)
     public ResponseEntity<Map<String,String>> handleRuntime(RuntimeException ex) {
         Map<String,String> body = new HashMap<>();
-        body.put("error", ex.getMessage());
-        return ResponseEntity.status(HttpStatus.NOT_FOUND).body(body);
+        body.put("error", "Unexpected error: " + ex.getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(body);
     }
 
     @ExceptionHandler(org.springframework.dao.DataIntegrityViolationException.class)
-    public ResponseEntity<Map<String,String>> handleDbIntegrity(org.springframework.dao.DataIntegrityViolationException ex) {
+    public ResponseEntity<Map<String,String>> handleDbIntegrity(
+            org.springframework.dao.DataIntegrityViolationException ex) {
+
         Map<String,String> body = new HashMap<>();
-        String msg = ex.getRootCause() != null ? ex.getRootCause().getMessage() : ex.getMessage();
+        String msg = ex.getRootCause() != null
+                ? ex.getRootCause().getMessage()
+                : ex.getMessage();
+
         body.put("error", "Database error: " + msg);
         return ResponseEntity.status(HttpStatus.CONFLICT).body(body);
     }

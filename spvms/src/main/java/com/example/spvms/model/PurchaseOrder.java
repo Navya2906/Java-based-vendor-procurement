@@ -1,73 +1,69 @@
 package com.example.spvms.model;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.*;
-
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.List;
 import java.time.LocalDate;
 
+
 @Entity
-@Table(name = "purchase_orders")
+@Table(name = "purchase_order")
 public class PurchaseOrder {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @Column(name = "po_id")
+    private Long poId;
 
-    @NotBlank(message = "PO number is required")
-    @Column(name = "po_number", nullable = false, unique = true)
-    private String poNumber;
+    @Column(name = "pr_id", nullable = false)
+    private Long prId;
 
-    @NotNull(message = "PO date is required")
+    private BigDecimal subtotal;
+    private BigDecimal taxAmount;
+    private BigDecimal totalAmount;
+
+    private String poStatus;
+
+    @OneToMany(mappedBy = "purchaseOrder", cascade = CascadeType.ALL)
+    private List<PurchaseOrderItem> items= new ArrayList<>();
+
     @Column(name = "po_date", nullable = false)
     private LocalDate poDate;
 
-    @NotBlank(message = "Status is required")
-    @Column(nullable = false)
-    private String status;
 
-    @NotNull(message = "Total amount is required")
-    @DecimalMin(value = "0.01", message = "Total amount must be greater than zero")
-    @Column(name = "total_amount", nullable = false)
-    private BigDecimal totalAmount;
+    // ===== GETTERS & SETTERS =====
 
-    @NotNull(message = "Vendor ID is required")
-    @Column(name = "vendor_id", nullable = false)
-    private Long vendorId;
-
-    /* ================= GETTERS & SETTERS ================= */
-
-    public Long getId() {
-        return id;
+    public Long getPoId() {
+        return poId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setPoId(Long poId) {
+        this.poId = poId;
     }
 
-    public String getPoNumber() {
-        return poNumber;
+    public Long getPrId() {
+        return prId;
     }
 
-    public void setPoNumber(String poNumber) {
-        this.poNumber = poNumber;
+    public void setPrId(Long prId) {
+        this.prId = prId;
     }
 
-    public LocalDate getPoDate() {
-        return poDate;
+    public BigDecimal getSubtotal() {
+        return subtotal;
     }
 
-    public void setPoDate(LocalDate poDate) {
-        this.poDate = poDate;
+    public void setSubtotal(BigDecimal subtotal) {
+        this.subtotal = subtotal;
     }
 
-    public String getStatus() {
-        return status;
+    public BigDecimal getTaxAmount() {
+        return taxAmount;
     }
 
-    // ✅ FIXED — no exception
-    public void setStatus(String status) {
-        this.status = status;
+    public void setTaxAmount(BigDecimal taxAmount) {
+        this.taxAmount = taxAmount;
     }
 
     public BigDecimal getTotalAmount() {
@@ -78,11 +74,28 @@ public class PurchaseOrder {
         this.totalAmount = totalAmount;
     }
 
-    public Long getVendorId() {
-        return vendorId;
+    public String getPoStatus() {
+        return poStatus;
     }
 
-    public void setVendorId(Long vendorId) {
-        this.vendorId = vendorId;
+    public void setPoStatus(String poStatus) {
+        this.poStatus = poStatus;
     }
+
+    public List<PurchaseOrderItem> getItems() {
+        return items;
+    }
+
+    public void setItems(List<PurchaseOrderItem> items) {
+        this.items = items;
+    }
+
+    public LocalDate getPoDate() {
+        return poDate;
+    }
+
+    public void setPoDate(LocalDate poDate) {
+        this.poDate = poDate;
+    }
+
 }

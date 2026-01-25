@@ -30,7 +30,9 @@ public class VendorServiceImpl implements VendorService {
         vendor.setPhone(request.getPhone());
         vendor.setAddress(request.getAddress());
 
-        // Sprint-3 fields
+        // ✅ GST Number
+        vendor.setGstNumber(request.getGstNumber());
+
         vendor.setRating(request.getRating());
         vendor.setLocation(request.getLocation());
         vendor.setCategory(request.getCategory());
@@ -41,6 +43,7 @@ public class VendorServiceImpl implements VendorService {
 
         return vendorRepository.save(vendor);
     }
+
 
     @Override
     public Vendor updateVendor(Long id, VendorRequest request) {
@@ -54,6 +57,11 @@ public class VendorServiceImpl implements VendorService {
         vendor.setPhone(request.getPhone());
         vendor.setAddress(request.getAddress());
 
+        // ✅ Update GST only if provided
+        if (request.getGstNumber() != null) {
+            vendor.setGstNumber(request.getGstNumber());
+        }
+
         vendor.setRating(request.getRating());
         vendor.setLocation(request.getLocation());
         vendor.setCategory(request.getCategory());
@@ -63,6 +71,7 @@ public class VendorServiceImpl implements VendorService {
 
         return vendorRepository.save(vendor);
     }
+
 
     @Override
     public Vendor getVendorById(Long id) {

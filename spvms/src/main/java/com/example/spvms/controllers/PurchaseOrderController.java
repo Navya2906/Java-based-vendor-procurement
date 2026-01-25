@@ -1,16 +1,15 @@
 package com.example.spvms.controllers;
 
-import java.util.List;
+import jakarta.validation.Valid;
 
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import java.util.Map;
+
 import org.springframework.web.bind.annotation.*;
 
-import com.example.spvms.dto.PurchaseOrderDto;
+import com.example.spvms.dto.PurchaseOrderItemDTO;
 import com.example.spvms.model.PurchaseOrder;
+import com.example.spvms.model.PurchaseOrderItem;
 import com.example.spvms.service.PurchaseOrderService;
-
-import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/api/purchase-orders")
@@ -22,45 +21,61 @@ public class PurchaseOrderController {
         this.service = service;
     }
 
+    // PR → PO
     /* ================= CREATE PO ================= */
-
-    @PostMapping
-    public ResponseEntity<PurchaseOrder> createPurchaseOrder(
-            @Valid @RequestBody PurchaseOrderDto dto) {
-
-        PurchaseOrder created = service.create(dto);
-        return ResponseEntity.status(HttpStatus.CREATED).body(created);
+    @PostMapping("/from-pr/{prId}")
+    public PurchaseOrder createPO(@PathVariable Long prId) {
+        return service.createPO(prId);
     }
 
-    /* ================= GET ALL PO ================= */
-
-    @GetMapping
-    public ResponseEntity<List<PurchaseOrder>> getAllPurchaseOrders() {
-        return ResponseEntity.ok(service.getAll());
+    /* ================= GET PO ================= */
+    @GetMapping("/{poId}")
+    public PurchaseOrder getPO(@PathVariable Long poId) {
+        return service.getPO(poId);
     }
 
-    /* ================= GET PO BY ID ================= */
-
-    @GetMapping("/{id}")
-    public ResponseEntity<Object> getPurchaseOrderById(@PathVariable Long id) {
-        return ResponseEntity.ok(service.getById(id));
+    // Add Item
+    @PostMapping("/{poId}/items")
+    public PurchaseOrder addItem(
+            @PathVariable Long poId,
+            @Valid @RequestBody PurchaseOrderItemDTO dto) {
+        return service.addItem(poId, dto);
     }
 
-    /* ================= UPDATE STATUS ================= */
-
-    @PatchMapping("/{id}/status")
-    public ResponseEntity<PurchaseOrder> updateStatus(
-            @PathVariable Long id,
-            @RequestParam String status) {
-
-        return ResponseEntity.ok(service.updateStatus(id, status));
+    /* ================= FULL UPDATE ITEM ================= */
+    @PutMapping("/items/{itemId}")
+    public PurchaseOrder updateItem(
+            @PathVariable Long itemId,
+            @RequestBody PurchaseOrderItem item) {
+        return service.updateItem(itemId, item);
     }
 
-    /* ================= DELETE PO ================= */
+    /* ================= PARTIAL UPDATE ITEM ================= */
+    @PatchMapping("/items/{itemId}")
+    public PurchaseOrder patchItem(
+            @PathVariable Long itemId,
+            @RequestBody Map<String, Object> updates) {
+        return service.patchItem(itemId, updates);
+    }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deletePurchaseOrder(@PathVariable Long id) {
-        service.delete(id);
-        return ResponseEntity.noContent().build();
+    // Deliver Item
+    @PutMapping("/items/{itemId}/deliver")
+    public String deliverItem(@PathVariable Long itemId) {
+        service.deliverItem(itemId);
+        return "Item Delivered";
+    }
+
+    /* ================= DELETE ITEM ================= */
+    @DeleteMapping("/items/{itemId}")
+    public PurchaseOrder deleteItem(@PathVariable Long itemId) {
+        return service.deleteItem(itemId);
+    }
+
+
+    // Close PO
+    @PutMapping("/{poId}/close")
+    public String closePO(@PathVariable Long poId) {
+        service.closePO(poId);
+        return "PO Closed";
     }
 }

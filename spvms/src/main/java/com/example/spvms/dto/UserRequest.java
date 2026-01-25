@@ -1,5 +1,7 @@
 package com.example.spvms.dto;
 
+import java.util.Set;
+
 import jakarta.validation.constraints.*;
 
 public class UserRequest {
@@ -19,6 +21,9 @@ public class UserRequest {
     @NotNull(message = "Active status is required")
     private Boolean isActive;
 
+     @NotNull(message = "role is required")
+    private Set<String> roles;
+
     // Getters & Setters
     public String getUsername() { return username; }
     public void setUsername(String username) { this.username = username; }
@@ -31,4 +36,7 @@ public class UserRequest {
 
     public Boolean getIsActive() { return isActive; }
     public void setIsActive(Boolean isActive) { this.isActive = isActive; }
+
+    public Set<String> getRole() { return roles; }
+    public void setRole(Set<String> roles) { this.roles = roles; }
 }

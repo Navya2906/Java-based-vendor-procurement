@@ -1,6 +1,7 @@
 package com.example.spvms.controllers;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -43,21 +44,24 @@ public class UserController {
     /* UPDATE */
     @PutMapping("/{id}")
     public User update(@PathVariable Long id,
-                       @Valid @RequestBody UserDto dto) {
+                    @Valid @RequestBody UserDto dto) {
         return service.update(id, dto);
     }
 
     /* UPDATE STATUS */
     @PatchMapping("/{id}/status")
     public User updateStatus(@PathVariable Long id,
-                             @RequestParam Boolean isActive) {
+                            @RequestParam Boolean isActive) {
         return service.updateStatus(id, isActive);
     }
 
     /* DELETE */
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable Long id) {
+    public ResponseEntity<?> deleteUser(@PathVariable Long id) {
         service.delete(id);
-        return ResponseEntity.noContent().build();
-    }
+        return ResponseEntity.ok(
+            Map.of("message", "User deleted successfully")
+    );
+}
+
 }

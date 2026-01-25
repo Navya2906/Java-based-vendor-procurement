@@ -2,6 +2,8 @@ package com.example.spvms.config;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
+import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -9,18 +11,18 @@ import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 @Configuration
+@EnableMethodSecurity
 public class SecurityConfig {
+
+    private final JwtAuthFilter jwtAuthFilter;
+
+    public SecurityConfig(JwtAuthFilter jwtAuthFilter) {
+        this.jwtAuthFilter = jwtAuthFilter;
+    }
 
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();
-    }
-
-    private final JwtAuthFilter jwtAuthFilter;
-
-    // constructor injection (BEST PRACTICE)
-    public SecurityConfig(JwtAuthFilter jwtAuthFilter) {
-        this.jwtAuthFilter = jwtAuthFilter;
     }
 
     @Bean
@@ -30,33 +32,60 @@ public class SecurityConfig {
             .csrf(csrf -> csrf.disable())
             .authorizeHttpRequests(auth -> auth
 
-                // Swagger + Auth
+                // ✅ PUBLIC
                 .requestMatchers(
+                    "/api/auth/**",
                     "/swagger-ui/**",
                     "/v3/api-docs/**",
-                    "/swagger-ui.html",
-                    "/api/auth/**",
-                    "/auth/login", "/api/vendors/**", "/api/purchase-requisitions/**", "/api/purchase-orders/**"
+                    "/swagger-ui.html"
                 ).permitAll()
 
-                // Vendor APIs
-                .requestMatchers("/api/vendors/**")
+                // 🔐 VENDORS
+                .requestMatchers(HttpMethod.GET, "/api/vendors/**")
                 .hasAnyRole("ADMIN", "PROCUREMENT")
 
-                // Purchase Orders
+                .requestMatchers(HttpMethod.POST, "/api/vendors/**")
+                .hasRole("ADMIN")
+
+                .requestMatchers(HttpMethod.PUT, "/api/vendors/**")
+                .hasRole("ADMIN")
+
+                .requestMatchers(HttpMethod.DELETE, "/api/vendors/**")
+                .hasRole("ADMIN")
+
+                // 🔐 USERS
+                .requestMatchers("/api/users/**")
+                .hasRole("ADMIN")
+
+                // 🔐 PURCHASE ORDERS
                 .requestMatchers("/api/purchase-orders/**")
                 .hasAnyRole("ADMIN", "FINANCE")
 
-                // Purchase Requisitions
-                .requestMatchers("/api/purchase-requisitions/**")
-                .hasAnyRole("ADMIN", "FINANCE")
+                // 🔐 PURCHASE REQUISITIONS
+                
+                // Anyone authenticated can view or submit
+                .requestMatchers(
+                    HttpMethod.GET,
+                    "/api/purchase-requisitions/**"
+                ).authenticated()
 
+                .requestMatchers(
+                HttpMethod.POST,
+                "/api/purchase-requisitions/*/submit"
+                ).authenticated()
+
+                // Only approvers can approve / reject
+                .requestMatchers(
+                HttpMethod.POST,
+                "/api/purchase-requisitions/*/approve",
+                "/api/purchase-requisitions/*/reject"
+                ).hasAnyRole("ADMIN", "PROCUREMENT")
+
+
+                // 🔐 EVERYTHING ELSE
                 .anyRequest().authenticated()
             )
-            .addFilterBefore(
-                jwtAuthFilter,   // ✅ OBJECT, not class
-                UsernamePasswordAuthenticationFilter.class
-            );
+            .addFilterBefore(jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
     }

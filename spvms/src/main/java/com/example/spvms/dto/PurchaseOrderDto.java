@@ -1,66 +1,27 @@
 package com.example.spvms.dto;
 
-import jakarta.validation.constraints.*;
 import java.math.BigDecimal;
-import java.time.LocalDate;
 
-public class PurchaseOrderDto {
+public class PurchaseOrderDTO {
 
-    @NotBlank(message = "PO number is mandatory")
-    private String poNumber;
-
-    @NotNull(message = "PO date is mandatory")
-    private LocalDate poDate;
-
-    @NotBlank(message = "Status is mandatory")
-    private String status;
-
-    @NotNull(message = "Total amount is mandatory")
-    @DecimalMin(value = "0.01", message = "Total amount must be greater than 0")
+    private Long prId;
+    private BigDecimal subtotal;
+    private BigDecimal taxAmount;
     private BigDecimal totalAmount;
+    private String poStatus;
 
-    @NotNull(message = "Vendor ID is mandatory")
-    private Long vendorId;
+    public Long getPrId() { return prId; }
+    public void setPrId(Long prId) { this.prId = prId; }
 
-    /* ========= GETTERS & SETTERS ========= */
+    public BigDecimal getSubtotal() { return subtotal; }
+    public void setSubtotal(BigDecimal subtotal) { this.subtotal = subtotal; }
 
-    public String getPoNumber() {
-        return poNumber;
-    }
+    public BigDecimal getTaxAmount() { return taxAmount; }
+    public void setTaxAmount(BigDecimal taxAmount) { this.taxAmount = taxAmount; }
 
-    public void setPoNumber(String poNumber) {
-        this.poNumber = poNumber;
-    }
+    public BigDecimal getTotalAmount() { return totalAmount; }
+    public void setTotalAmount(BigDecimal totalAmount) { this.totalAmount = totalAmount; }
 
-    public LocalDate getPoDate() {
-        return poDate;
-    }
-
-    public void setPoDate(LocalDate poDate) {
-        this.poDate = poDate;
-    }
-
-    public String getStatus() {
-        return status;
-    }
-
-    public void setStatus(String status) {
-        this.status = status;
-    }
-
-    public BigDecimal getTotalAmount() {
-        return totalAmount;
-    }
-
-    public void setTotalAmount(BigDecimal totalAmount) {
-        this.totalAmount = totalAmount;
-    }
-
-    public Long getVendorId() {
-        return vendorId;
-    }
-
-    public void setVendorId(Long vendorId) {
-        this.vendorId = vendorId;
-    }
+    public String getPoStatus() { return poStatus; }
+    public void setPoStatus(String poStatus) { this.poStatus = poStatus; }
 }

@@ -21,7 +21,7 @@ public class AuthService {
     private final BCryptPasswordEncoder passwordEncoder;
 
     public AuthService(UserRepository userRepository,
-                       RoleRepository roleRepository) {
+                    RoleRepository roleRepository) {
 
         this.userRepository = userRepository;
         this.roleRepository = roleRepository;
@@ -67,15 +67,14 @@ public class AuthService {
         }
 
         user.setRoles(roles);
+        userRepository.save(user);
 
-        // Save user
-        User savedUser = userRepository.save(user);
+        RegisterResponse response = new RegisterResponse();
+        response.setId(user.getId());
+        response.setUsername(user.getUsername());
+        response.setEmail(user.getEmail());
+        response.setMessage("User registered successfully");
 
-        // Response
-        return new RegisterResponse(
-                savedUser.getId(),
-                savedUser.getUsername(),
-                savedUser.getEmail()
-        );
+        return response;
     }
 }

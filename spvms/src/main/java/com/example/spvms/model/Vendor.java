@@ -35,8 +35,8 @@ public class Vendor {
     @Column(name = "name", nullable = false, length = 200)
     private String name;
 
-    @Column(name = "userName", length = 150)
-    private String userName;
+    @Column(name = "username", length = 150)
+    private String username;
 
     @Column(name = "email", length = 150)
     private String email;
@@ -76,8 +76,8 @@ public class Vendor {
     public String getName() { return name; }
     public void setName(String name) { this.name = name; }
 
-    public String getUserName() { return userName; }
-    public void setUserName(String userName) { this.userName = userName; }
+    public String getUserName() { return username; }
+    public void setUserName(String username) { this.username = username; }
 
     public String getEmail() { return email; }
     public void setEmail(String email) { this.email = email; }

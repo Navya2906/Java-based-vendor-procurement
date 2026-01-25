@@ -1,12 +1,20 @@
 package com.example.spvms.dto;
 
-import com.example.spvms.enums.RequisitionStatus;
 import jakarta.validation.constraints.*;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
 
+
 public class PurchaseRequisitionDto {
+
+    /* ================= STATUS ENUM ================= */
+    public enum Status {
+        DRAFT,
+        SUBMITTED,
+        APPROVED,
+        REJECTED
+    }
 
     @NotBlank(message = "PR number is required")
     private String prNumber;
@@ -18,7 +26,7 @@ public class PurchaseRequisitionDto {
     private Long vendorId;
 
     @NotNull(message = "Status is required")
-    private RequisitionStatus status;
+    private Status status;
 
     @NotNull(message = "Total amount is required")
     @DecimalMin(value = "0.0", inclusive = false)
@@ -45,8 +53,8 @@ public class PurchaseRequisitionDto {
     public Long getVendorId() { return vendorId; }
     public void setVendorId(Long vendorId) { this.vendorId = vendorId; }
 
-    public RequisitionStatus getStatus() { return status; }
-    public void setStatus(RequisitionStatus status) { this.status = status; }
+    public Status getStatus() { return status; }
+    public void setStatus(Status status) { this.status = status; }
 
     public BigDecimal getTotalAmount() { return totalAmount; }
     public void setTotalAmount(BigDecimal totalAmount) { this.totalAmount = totalAmount; }
