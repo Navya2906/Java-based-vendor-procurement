@@ -30,7 +30,7 @@ public class SecurityConfig {
 
         http
             .csrf(csrf -> csrf.disable())
-            .authorizeHttpRequests(auth -> auth
+                .authorizeHttpRequests(auth -> auth
 
                 // ✅ PUBLIC
                 .requestMatchers(
@@ -39,6 +39,10 @@ public class SecurityConfig {
                     "/v3/api-docs/**",
                     "/swagger-ui.html"
                 ).permitAll()
+
+                // 🔐 REPORTS (ADMIN ONLY)
+                .requestMatchers("/reports/**").hasRole("ADMIN")
+
 
                 // 🔐 VENDORS
                 .requestMatchers(HttpMethod.GET, "/api/vendors/**")
@@ -81,6 +85,7 @@ public class SecurityConfig {
                 "/api/purchase-requisitions/*/reject"
                 ).hasAnyRole("ADMIN", "PROCUREMENT")
 
+                .requestMatchers("/reports/**").hasRole("ADMIN")
 
                 // 🔐 EVERYTHING ELSE
                 .anyRequest().authenticated()

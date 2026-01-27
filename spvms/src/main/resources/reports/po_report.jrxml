@@ -1,0 +1,17 @@
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports">
+    <field name="poId" class="java.lang.Long"/>
+    <field name="prId" class="java.lang.Long"/>
+    <field name="poStatus" class="java.lang.String"/>
+    <field name="totalAmount" class="java.math.BigDecimal"/>
+    <field name="poDate" class="java.time.LocalDate"/>
+
+    <detail>
+        <band height="20">
+            <textField><textFieldExpression><![CDATA[$F{poId}]]></textFieldExpression></textField>
+            <textField><textFieldExpression><![CDATA[$F{prId}]]></textFieldExpression></textField>
+            <textField><textFieldExpression><![CDATA[$F{poStatus}]]></textFieldExpression></textField>
+            <textField><textFieldExpression><![CDATA[$F{totalAmount}]]></textFieldExpression></textField>
+            <textField><textFieldExpression><![CDATA[$F{poDate}]]></textFieldExpression></textField>
+        </band>
+    </detail>
+</jasperReport>

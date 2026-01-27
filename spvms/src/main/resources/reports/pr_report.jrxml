@@ -1,0 +1,17 @@
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports">
+    <field name="prNumber" class="java.lang.String"/>
+    <field name="requisitionNumber" class="java.lang.String"/>
+    <field name="status" class="java.lang.String"/>
+    <field name="totalAmount" class="java.math.BigDecimal"/>
+    <field name="requisitionDate" class="java.time.LocalDate"/>
+
+    <detail>
+        <band height="20">
+            <textField><textFieldExpression><![CDATA[$F{prNumber}]]></textFieldExpression></textField>
+            <textField><textFieldExpression><![CDATA[$F{requisitionNumber}]]></textFieldExpression></textField>
+            <textField><textFieldExpression><![CDATA[$F{status}]]></textFieldExpression></textField>
+            <textField><textFieldExpression><![CDATA[$F{totalAmount}]]></textFieldExpression></textField>
+            <textField><textFieldExpression><![CDATA[$F{requisitionDate}]]></textFieldExpression></textField>
+        </band>
+    </detail>
+</jasperReport>

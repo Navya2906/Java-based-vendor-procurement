@@ -74,8 +74,8 @@ public class PurchaseOrderService {
     }
     
     /* ================= GET PO ================= */
-    public PurchaseOrder getPO(Long poId) {
-        return poRepo.findById(poId)
+    public PurchaseOrder getPO(Long PoId) {
+        return poRepo.findById(PoId)
                 .orElseThrow(() -> new RuntimeException("PO not found"));
     }
 

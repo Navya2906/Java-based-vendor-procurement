@@ -1,0 +1,17 @@
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports">
+    <field name="id" class="java.lang.Long"/>
+    <field name="name" class="java.lang.String"/>
+    <field name="email" class="java.lang.String"/>
+    <field name="location" class="java.lang.String"/>
+    <field name="rating" class="java.lang.Double"/>
+
+    <detail>
+        <band height="20">
+            <textField><textFieldExpression><![CDATA[$F{id}]]></textFieldExpression></textField>
+            <textField><textFieldExpression><![CDATA[$F{name}]]></textFieldExpression></textField>
+            <textField><textFieldExpression><![CDATA[$F{email}]]></textFieldExpression></textField>
+            <textField><textFieldExpression><![CDATA[$F{location}]]></textFieldExpression></textField>
+            <textField><textFieldExpression><![CDATA[$F{rating}]]></textFieldExpression></textField>
+        </band>
+    </detail>
+</jasperReport>
