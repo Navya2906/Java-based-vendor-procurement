@@ -3,6 +3,7 @@ package com.example.spvms.model;
 import jakarta.persistence.*;
 import java.math.BigDecimal;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
@@ -13,9 +14,9 @@ public class PurchaseOrderItem {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long itemId;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "po_id", nullable = false)
-    @JsonIgnore
+    @ManyToOne()
+    @JoinColumn(name = "po_id")
+    @JsonBackReference
     private PurchaseOrder purchaseOrder;
 
     private String itemName;

@@ -2,8 +2,10 @@ package com.example.spvms.controllers;
 
 import jakarta.validation.Valid;
 
+import java.util.List;
 import java.util.Map;
 
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.spvms.dto.PurchaseOrderItemDTO;
@@ -13,6 +15,7 @@ import com.example.spvms.service.PurchaseOrderService;
 
 @RestController
 @RequestMapping("/api/purchase-orders")
+@CrossOrigin(origins = "http://localhost:3000")
 public class PurchaseOrderController {
 
     private final PurchaseOrderService service;
@@ -24,9 +27,19 @@ public class PurchaseOrderController {
     // PR → PO
     /* ================= CREATE PO ================= */
     @PostMapping("/from-pr/{prId}")
-    public PurchaseOrder createPO(@PathVariable Long prId) {
-        return service.createPO(prId);
+    public ResponseEntity<PurchaseOrder> createFromPR(@PathVariable Long prId) {
+
+        PurchaseOrder po = service.createFromPR(prId);
+
+        return ResponseEntity.ok(po);
     }
+
+     // ✅ GET ALL PURCHASE ORDERS
+    @GetMapping
+    public ResponseEntity<List<PurchaseOrder>> getAllPOs() {
+        return ResponseEntity.ok(service.getAllPOs());
+    }
+
 
     /* ================= GET PO ================= */
     @GetMapping("/{poId}")

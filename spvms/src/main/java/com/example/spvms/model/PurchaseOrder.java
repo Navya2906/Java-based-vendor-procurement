@@ -4,6 +4,9 @@ import jakarta.persistence.*;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonManagedReference;
+
 import java.time.LocalDate;
 
 
@@ -25,7 +28,8 @@ public class PurchaseOrder {
 
     private String poStatus;
 
-    @OneToMany(mappedBy = "purchaseOrder", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "purchaseOrder", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
     private List<PurchaseOrderItem> items= new ArrayList<>();
 
     @Column(name = "po_date", nullable = false)
@@ -96,6 +100,11 @@ public class PurchaseOrder {
 
     public void setPoDate(LocalDate poDate) {
         this.poDate = poDate;
+    }
+
+    public static PurchaseOrder createPO(Long prId2) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'createPO'");
     }
 
 }

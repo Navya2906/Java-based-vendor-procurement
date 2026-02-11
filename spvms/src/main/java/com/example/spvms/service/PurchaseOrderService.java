@@ -2,6 +2,7 @@ package com.example.spvms.service;
 
 import org.springframework.stereotype.Service;
 
+import com.example.spvms.dto.PurchaseOrderDTO;
 import com.example.spvms.dto.PurchaseOrderItemDTO;
 import com.example.spvms.model.PurchaseOrder;
 import com.example.spvms.model.PurchaseOrderItem;
@@ -19,9 +20,11 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 import java.math.BigDecimal;
 
 @Service
+@Transactional
 public class PurchaseOrderService {
 
     private final PurchaseOrderRepository poRepo;
@@ -37,7 +40,7 @@ public class PurchaseOrderService {
     }
 
     // PR → PO
-    public PurchaseOrder createPO(Long prId) {
+    public PurchaseOrder createFromPR(Long prId) {
 
         PurchaseRequisition pr = prRepo.findById(prId)
                 .orElseThrow(() -> new RuntimeException("PR not found"));
@@ -72,7 +75,15 @@ public class PurchaseOrderService {
 
         return poRepo.save(po);
     }
-    
+
+    // ✅ GET ALL
+     public List<PurchaseOrder> getAllPOs() {
+        List<PurchaseOrder> orders = poRepo.findAll();
+
+        System.out.println("GET ALL POs → count = " + orders.size());
+
+        return orders;
+    }
     /* ================= GET PO ================= */
     public PurchaseOrder getPO(Long PoId) {
         return poRepo.findById(PoId)
